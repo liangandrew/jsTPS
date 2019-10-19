@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jsTPS Demo and Unit Tests</title>
+        <meta charset='UTF-8'>
+        <script src="./test/demo/AddToNum_Transaction.js"></script>
+        <script src="./test/demo/AndMask_Transaction.js"></script>
+        <script src="./test/demo/jTPS_Tester.js"></script>
+        <script src="./test/demo/Num.js"></script>
+        <script src="./test/demo/OrMask_Transaction.js"></script>
+        <script src="./test/junit_test_beds/jTPS_Unit_Tests.js"></script>
+        <script src="./src/jtps/jTPS.js"></script>
+        <script src="./src/jtps/jTPS_Transaction.js"></script>
+        <script>
+            window.onload = function(){
+                let jtps = new jTPS();
+                let num = new Num();
+                let tests = new jTPS_Unit_Tests();
+                let output = document.getElementById('output_area');
+                output.innerHTML = jtps.toString();
+                let input = document.getElementById('input_form');
+                let subButton = document.getElementById('submit_button');
+                subButton.onclick = function(){
+                    if(input.value == 1){
+                        jtps.addTransaction(new AddToNum_Transaction(num, 10));
+                        output.innerHTML = jtps.toString();
+                        output.innerHTML = jtps.toString() + "\n--Num:" + num.getNum() ;
+                    }
+                    if(input.value == 2){
+                        jtps.undoTransaction();
+                        output.innerHTML = jtps.toString();
+                        output.innerHTML = jtps.toString() + "\n--Num:" + num.getNum() ;
+                    }
+                    if(input.value == 3){
+                        jtps.doTransaction();
+                        output.innerHTML = jtps.toString();
+                        output.innerHTML = jtps.toString() + "\n--Num:" + num.getNum() ;
+                    }
+                    if(input.value == 4){
+                        jtps.clearAllTransactions();
+                        output.innerHTML = jtps.toString();
+                        output.innerHTML = jtps.toString() + "\n--Num:" + num.getNum() ;
+                    }
+                    if(input.value == 5){
+                        jtps.clearAllTransactions();
+                        let num = new Num();
+                        output.innerHTML = jtps.toString() + "\n--Num:" + num.getNum() ;
+                    }
+                    
+                }
+                tests.testAdd();
+                tests.testAndMask();
+                tests.testUndo();
+                tests.testRedo();
+                tests.testClear();
+
+                console.log(tests.string);               
+                document.getElementById('unit_test').innerHTML =tests.string;
+            }
+        </script>
+    </head>
+    <body>
+        <h1>jsTPS Demo and Unit Tests</h1>
+        <div id='menu'>
+            <h2>Enter a selection</h2>
+            <p>1) Add a transaction</p>
+            <p>2) Undo a transaction</p>
+            <p>3) Redo a Transaction</p>
+            <p>4) Clear All Transactions</p>
+            <p>5) Reset Num and Transactions</p>
+        </div>
+        <input id='input_form' type='number'>
+        <button id='submit_button'>Submit</button>
+        <div id='output_area'>
+            
+        </div>
+
+        <div id='unit_test'>
+
+        </div>
+    </body>
+</html>
